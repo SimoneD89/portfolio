@@ -5,4 +5,4 @@ Esempio di convergenza non uniforme
 ---------------------------------------------------
 [IT] Questo script è stato creato a scopo didattico per evidenziare come non sia
 garantito che il limite di una funzione è la funzione del limite quando la
-continuità non è uniforme
+continuità non è uniforme.
