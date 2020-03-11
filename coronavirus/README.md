@@ -3,8 +3,8 @@ Coronavirus outbreak by (most infected) countries
 ![Coronavirus outbreak](coronavirus.png)
 
 ---------------------------------------------------
-[EN] This repository is created as a personal container to publish the python
-script of my personal Covid-19 analysis of the most infected countries.
+[EN] This script is my personal analysis of the most infected countries
+because of the 2019-20 coronavirus outbreak.
 
 The data are taken from Wikipedia
 https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_outbreak
@@ -13,9 +13,8 @@ This script is created for a didactic use and it is not intended to be a
 true interpretation of the current events.
 
 ---------------------------------------------------
-[IT] Questo repository è stato creato come spazio personale dove pubblicare
-la mia analisi basata su python della diffusione del virus Covid-19 nei
-paesi più infettati.
+[IT] Questo script è la mia analisi personale della diffusione del virus Covid-19
+nei paesi più esposti all'infezione.
 
 I dati sono stati recuperati da Wikipedia
 https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_outbreak
