@@ -22,8 +22,3 @@ https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_outbreak
 Questo script è un esercizio di stile creato unicamente a
 scopo didattico e non ha la pretesa di essere una interpretazione
 attendibile dell'attualità.
-
----------------------------------------------------
-- The 'datasets' directory contains the data about infected/dead people for different countries
-- The script is coronavirus.py
-- The output plot is coronavirus.png
