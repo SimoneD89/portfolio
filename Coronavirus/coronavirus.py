@@ -147,7 +147,8 @@ ax2.yaxis.tick_right()
 ax2.set_ylabel("Dead People", rotation=270, labelpad=13)
 ax2.yaxis.set_label_position("right")
 
-ax1.legend(loc="upper left")
+ax1.legend(loc="lower left", fontsize=8, ncol=3,
+           bbox_to_anchor=(-0.004, 0.99, 1.008, 0.), mode="expand")
 # ax1.legend(loc="upper left", bbox_to_anchor=(0, 0.9))
 ax1.grid(b=True, which="major", linestyle="-")
 ax1.grid(b=True, which="minor", linestyle="--")
@@ -155,5 +156,5 @@ ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
 
 plt.tight_layout()
-plt.savefig("coronavirus.png", dpi=175)
+plt.savefig("coronavirus.png", dpi=200)
 plt.show()
