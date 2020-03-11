@@ -17,7 +17,7 @@ true interpretation of the current events.
 
 ---------------------------------------------------
 [IT] Questo repository è la mia analisi personale dell'aumento del numero di
-ciclisti, includendo gli effetti metereologici, in Seattle nel periodo 2012-20t
+ciclisti, includendo gli effetti metereologici, in Seattle nel periodo 2012-2020
 usando l'Apprendimento Automatico.
 
 I dati sono stati recuperati da
