@@ -4,7 +4,7 @@ Analysis of diodes used in quantum cryptography
 
 ---------------------------------------------------
 [EN] This script is my personal analysis of the diode components used in quantum
-cryptography modules.
+cryptography.
 
 This script is created for a didactic use and it is not intended to be a
 true interpretation of the current events.
