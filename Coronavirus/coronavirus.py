@@ -111,13 +111,15 @@ for i in country_ds.index:
     )
     ax1.plot(df.index, df["count"].values, ".",
              color=country_ds["color"].iloc[i], label=label, markersize=10)
-    ax1.plot(d1, 2**(func(t1, *param)), ":", alpha=0.7,
+    ax1.plot(d1, 2**(func(t1, *param)), ":", alpha=0.6,
              color=country_ds["color"].iloc[i])
-    ax1.plot(d2, 2**(func(t2, *param)), ":", alpha=0.4,
+    ax1.plot(d2, 2**(func(t2, *param)), ":", alpha=0.3,
              color=country_ds["color"].iloc[i])
 
-    ax2.plot(df.index, df["death"].values, ":.",
+    ax2.plot(df.index, df["death"].values, ".",
              color=country_ds["color"].iloc[i], markersize=10)
+    ax2.plot(df.index, df["death"].values, ":",
+             color=country_ds["color"].iloc[i], alpha=0.6)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          size=10, ha="right", va="bottom", weight="bold", clip_on=True,
@@ -134,7 +136,8 @@ ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
-ax1.set_ylim(bottom=50)
+ax1.set_ylim(bottom=100)
+ax1.set_ylim(top=15000)
 ax1.yaxis.tick_right()
 ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
 ax1.yaxis.set_label_position("right")
@@ -144,7 +147,8 @@ ax2.yaxis.tick_right()
 ax2.set_ylabel("Dead People", rotation=270, labelpad=13)
 ax2.yaxis.set_label_position("right")
 
-ax1.legend(loc="upper left", bbox_to_anchor=(0, 0.9))
+ax1.legend(loc="upper left")
+#ax1.legend(loc="upper left", bbox_to_anchor=(0, 0.9))
 ax1.grid(b=True, which="major", linestyle="-")
 ax1.grid(b=True, which="minor", linestyle="--")
 ax2.grid(b=True, which="major", linestyle="-")
