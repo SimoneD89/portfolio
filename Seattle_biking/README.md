@@ -1,6 +1,6 @@
 # Seattle Riders
 Analysis of the increasing number of riders in Seattle
-![Coronavirus outbreak](Seattle.png)
+![Seattle Riders](Seattle.png)
 
 ---------------------------------------------------
 [EN] This script is my personal analysis of the increasing number of riders
@@ -16,7 +16,7 @@ This script is created for a didactic use and it is not intended to be a
 true interpretation of the current events.
 
 ---------------------------------------------------
-[IT] Questo repository è la mia analisi personale dell'aumento del numero di
+[IT] Questo script è la mia analisi personale dell'aumento del numero di
 ciclisti, includendo gli effetti metereologici, in Seattle nel periodo 2012-2020
 usando l'Apprendimento Automatico.
 
