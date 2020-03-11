@@ -18,20 +18,22 @@ country_ds = pd.DataFrame(
     columns=["name", "filename", "date_format", "color", "fit", "tot"]
 )
 country_ds["name"] = [
-    "South Korea", "Iran", "Italy", "Germany", "France", "China", "Spain"
+    "South Korea", "Iran", "Italy", "Germany", "France", "China", "Spain",
+    "Switzerland"
 ]
 country_ds["filename"] = [
     "SouthKorea.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
-    "China.dat", "Spain.dat"
+    "China.dat", "Spain.dat", "Switzerland.dat"
 ]
 country_ds["date_format"] = [
-    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", None, "%Y-%m-%d"
+    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", None, "%Y-%m-%d",
+    "%Y-%m-%d"
 ]
 country_ds["color"] = [
-    "purple", "brown", "green", "orange", "blue", "red", "black"
+    "purple", "brown", "green", "orange", "blue", "red", "black", "crimson"
 ]
 country_ds["fit"] = [
-    "lin", "lin", "lin", "lin", "lin", "lin", "lin"
+    "lin", "lin", "lin", "lin", "lin", "lin", "lin", "lin"
 ]
 
 for i in country_ds.index:
