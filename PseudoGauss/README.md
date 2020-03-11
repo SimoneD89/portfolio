@@ -15,7 +15,6 @@ true interpretation of the current events.
 ---------------------------------------------------
 [IT] Questo script è la mia analisi personale del segnale di un diodo utilizzando
 diversi modelli
-l'apprendimento automatico
 - distribuzione Gaussiana
 - distribuzione Gaussiana Modificata
 - distribuzione Gaussiana Asimmetrica
