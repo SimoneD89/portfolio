@@ -110,16 +110,16 @@ for i in country_ds.index:
         df["death"].values[-1]/df["count"].values[-1]*100
     )
     ax1.plot(df.index, df["count"].values, ".",
-             color=country_ds["color"].iloc[i], label=label, markersize=10)
-    ax1.plot(d1, 2**(func(t1, *param)), ":", alpha=0.6,
-             color=country_ds["color"].iloc[i])
-    ax1.plot(d2, 2**(func(t2, *param)), ":", alpha=0.3,
-             color=country_ds["color"].iloc[i])
+             color=country_ds["color"].iloc[i], label=label, markersize=7)
+    ax1.plot(d1, 2**(func(t1, *param)), "-.", alpha=0.6,
+             color=country_ds["color"].iloc[i], linewidth=0.7)
+    ax1.plot(d2, 2**(func(t2, *param)), "-.", alpha=0.3,
+             color=country_ds["color"].iloc[i], linewidth=0.7)
 
     ax2.plot(df.index, df["death"].values, ".",
-             color=country_ds["color"].iloc[i], markersize=10)
-    ax2.plot(df.index, df["death"].values, ":",
-             color=country_ds["color"].iloc[i], alpha=0.6)
+             color=country_ds["color"].iloc[i], markersize=7)
+    ax2.plot(df.index, df["death"].values, "-.",
+             color=country_ds["color"].iloc[i], alpha=0.6, linewidth=0.7)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          size=10, ha="right", va="bottom", weight="bold", clip_on=True,
