@@ -124,7 +124,7 @@ for i in country_ds.index:
     ax2.plot(df.index, (100*df["death"]/df["count"]).values, ".",
              color=country_ds["color"].iloc[i], markersize=8)
     ax2.plot(df.index, (100*df["death"]/df["count"]).values, "-.",
-             color=country_ds["color"].iloc[i], alpha=0.6, linewidth=0.8)
+             color=country_ds["color"].iloc[i], alpha=0.3, linewidth=0.8)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          size=10, ha="right", va="bottom", weight="bold", clip_on=True,
