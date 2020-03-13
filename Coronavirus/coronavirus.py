@@ -34,28 +34,14 @@ country_ds["color"] = [
     "purple", "brown", "green", "orange", "blue", "red", "black", "crimson",
     "darkblue"
 ]
-country_ds["fit"] = [
-    "lin", "lin", "lin", "lin", "lin", "lin", "lin", "lin", "lin"
-]
 
 for i in country_ds.index:
-    if country_ds["date_format"].iloc[i] is None:
-        df = pd.read_csv(
-            "datasets/" + country_ds["filename"].iloc[i],
-            delimiter=";",
-            index_col="data",
-            parse_dates=True,
-        )
-    else:
-        df = pd.read_csv(
-            "datasets/" + country_ds["filename"].iloc[i],
-            delimiter=";",
-            index_col="data",
-            parse_dates=True,
-            date_parser=lambda x: pd.to_datetime(
-                x, format=country_ds["date_format"].iloc[i]
-            )
-        )
+    kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
+    if country_ds["date_format"].iloc[i] is not None:
+        kwargs["date_parser"] = lambda x: pd.to_datetime(
+                x, format=country_ds["date_format"].iloc[i])
+
+    df = pd.read_csv("datasets/" + country_ds["filename"].iloc[i], **kwargs)
     country_ds["tot"].iloc[i] = df["count"].iloc[-1]
 
 country_ds.sort_values(by=["tot"], ascending=False, inplace=True)
@@ -70,29 +56,16 @@ f, (ax1, ax2) = plt.subplots(2, 1, sharex=True,
 f.subplots_adjust(hspace=0)
 
 for i in country_ds.index:
-    if country_ds["date_format"].iloc[i] is None:
-        df = pd.read_csv(
-            "datasets/" + country_ds["filename"].iloc[i],
-            delimiter=";",
-            index_col="data",
-            parse_dates=True,
-        )
-    else:
-        df = pd.read_csv(
-            "datasets/" + country_ds["filename"].iloc[i],
-            delimiter=";",
-            index_col="data",
-            parse_dates=True,
-            date_parser=lambda x: pd.to_datetime(
-                x,
-                format=country_ds["date_format"].iloc[i])
-        )
+    kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
+    if country_ds["date_format"].iloc[i] is not None:
+        kwargs["date_parser"] = lambda x: pd.to_datetime(
+                x, format=country_ds["date_format"].iloc[i])
+    df = pd.read_csv("datasets/" + country_ds["filename"].iloc[i], **kwargs)
 
     t = mdates.date2num(df.index)
-    func = lin
     param = [1, t[-7], 0]
 
-    param, _ = curve_fit(func, t[-7:],
+    param, _ = curve_fit(lin, t[-7:],
                          np.log2(df["count"].values[-7:]),
                          p0=param)
 
@@ -112,9 +85,9 @@ for i in country_ds.index:
     )
     ax1.plot(df.index, df["count"].values, ".",
              color=country_ds["color"].iloc[i], label=label, markersize=8)
-    ax1.plot(d1, 2**(func(t1, *param)), "-.", alpha=0.6,
+    ax1.plot(d1, 2**(lin(t1, *param)), "-.", alpha=0.6,
              color=country_ds["color"].iloc[i], linewidth=0.8)
-    ax1.plot(d2, 2**(func(t2, *param)), "-.", alpha=0.3,
+    ax1.plot(d2, 2**(lin(t2, *param)), "-.", alpha=0.3,
              color=country_ds["color"].iloc[i], linewidth=0.8)
 
     df["death"].fillna(0, inplace=True)
