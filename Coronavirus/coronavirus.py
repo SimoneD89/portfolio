@@ -116,7 +116,7 @@ ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
 ax1.set_ylim(bottom=country_ds["tot"].min()/6)
-ax1.set_ylim(top=country_ds["tot"].nlargest(2)[1]*1.2)
+ax1.set_ylim(top=country_ds["tot"].max()*1.3)
 ax1.yaxis.tick_right()
 ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
 ax1.yaxis.set_label_position("right")
