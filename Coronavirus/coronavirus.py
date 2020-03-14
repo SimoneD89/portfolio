@@ -15,6 +15,10 @@ def lin(t, b, t0, c):
     return (t-t0)/b + c
 
 
+def spacing(n):
+    return "{:,d}".format(int(n)).replace(",", " ")
+
+
 country_ds = pd.DataFrame(
     columns=["name", "filename", "date_format", "color", "fit", "tot"]
 )
@@ -44,6 +48,7 @@ for i in country_ds.index:
     df = pd.read_csv("datasets/" + country_ds["filename"].iloc[i], **kwargs)
     country_ds["tot"].iloc[i] = df["count"].iloc[-1]
 
+country_ds["tot"] = country_ds["tot"].astype(int)
 country_ds.sort_values(by=["tot"], ascending=False, inplace=True)
 country_ds.reset_index(drop=True, inplace=True)
 
@@ -74,13 +79,12 @@ for i in country_ds.index:
     d1 = mdates.num2date(t1)
     d2 = mdates.num2date(t2)
 
-    label = r"{0!s}: $\tau \simeq$ {1:.1f} d, ".format(
-        country_ds["name"].iloc[i], param[0]
-    ) + "tot = {0:,d}".format(
-        df["count"].values[-1]
-    ).replace(",", " ") + r" ($\dag\,${:,d}".format(
-        int(df["death"].values[-1])
-    ).replace(",", " ") + r" $\cdot$ {:.1f}%)".format(
+    label = (r"%s: $\tau \simeq$ %.1f d, " +
+             r"tot = %s ($\dag\,$%s $\cdot$ %.1f%%)") % (
+        country_ds["name"].iloc[i],
+        param[0],
+        spacing(df["count"].values[-1]),
+        spacing(df["death"].values[-1]),
         df["death"].values[-1]/df["count"].values[-1]*100
     )
     ax1.plot(df.index, df["count"].values, ".",
