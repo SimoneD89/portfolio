@@ -20,7 +20,7 @@ def spacing(n):
 
 
 country_ds = pd.DataFrame(
-    columns=["name", "filename", "date_format", "color", "fit", "tot"]
+    columns=["name", "filename", "date_format", "color", "tot"]
 )
 country_ds["name"] = [
     "South Korea", "Iran", "Italy", "Germany", "France", "China", "Spain",
