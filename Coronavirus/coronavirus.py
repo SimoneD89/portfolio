@@ -9,7 +9,8 @@ from scipy.optimize import curve_fit
 from scipy.special import erf
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
-
+import seaborn as sns
+sns.set()
 
 def lin(t, b, t0, c):
     return (t-t0)/b + c
@@ -53,7 +54,6 @@ country_ds.sort_values(by=["tot"], ascending=False, inplace=True)
 country_ds.reset_index(drop=True, inplace=True)
 
 plt.rcParams.update({"font.size": 12})
-plt.style.use("ggplot")
 
 f, (ax1, ax2) = plt.subplots(2, 1, sharex=True,
                              figsize=(11.69, 8.27),
@@ -118,6 +118,7 @@ ax1.set_yscale("log")
 ax1.set_ylim(bottom=country_ds["tot"].min()/6)
 ax1.set_ylim(top=country_ds["tot"].max()*1.3)
 ax1.yaxis.tick_right()
+ax1.tick_params(axis="y", which="both", length=0)
 ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
 ax1.yaxis.set_label_position("right")
 
@@ -130,6 +131,7 @@ ax2.set_ylim((-0.25, 8))
 ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=16)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
+ax2.tick_params(axis="y", which="both", length=0)
 ax2.yaxis.set_label_position("right")
 
 ax1.legend(loc="lower left", fontsize=8, ncol=3,
