@@ -12,6 +12,7 @@ register_matplotlib_converters()
 import seaborn as sns
 sns.set()
 
+
 def lin(t, b, t0, c):
     return (t-t0)/b + c
 
@@ -127,7 +128,7 @@ ax2.yaxis.set_minor_locator(ticker.MultipleLocator(.5))
 ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
-ax2.set_ylim((-0.25, 8))
+ax2.set_ylim((-0.25, 8.5))
 ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=16)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
