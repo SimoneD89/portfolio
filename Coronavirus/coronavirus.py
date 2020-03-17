@@ -8,13 +8,13 @@ import matplotlib.dates as mdates
 from scipy.optimize import curve_fit
 from scipy.special import erf
 from pandas.plotting import register_matplotlib_converters
-register_matplotlib_converters()
 import seaborn as sns
 sns.set()
+register_matplotlib_converters()
 
 
-def lin(t, b, t0, c):
-    return (t-t0)/b + c
+def lin(t, tau, t0, c):
+    return (t-t0)/tau + c
 
 
 def spacing(n):
@@ -107,7 +107,7 @@ ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          transform=ax1.transAxes)
 
 ax1.set_xlim(left=mdates.num2date(t[-1] - 14.5))
-ax1.set_xlim(right=plt.xlim()[1] - 2.25)
+ax1.set_xlim(right=plt.xlim()[1] - 2.75)
 
 myFmt = mdates.DateFormatter("%b %d")
 
