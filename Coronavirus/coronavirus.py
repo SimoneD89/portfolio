@@ -22,7 +22,8 @@ def spacing(n):
 
 
 country_ds = pd.DataFrame(
-    columns=["name", "filename", "date_format", "color", "tot"]
+    columns=["name", "filename", "date_format", "color", "tot_count",
+             "tot_death", "lethality"]
 )
 country_ds["name"] = [
     "South Korea", "Iran", "Italy", "Germany", "France", "China", "Spain",
@@ -48,10 +49,13 @@ for i in country_ds.index:
                 x, format=country_ds["date_format"].iloc[i])
 
     df = pd.read_csv("datasets/" + country_ds["filename"].iloc[i], **kwargs)
-    country_ds["tot"].iloc[i] = df["count"].iloc[-1]
+    country_ds["tot_count"].iloc[i] = df["count"].iloc[-1]
+    country_ds["tot_death"].iloc[i] = df["death"].iloc[-1]
 
-country_ds["tot"] = country_ds["tot"].astype(int)
-country_ds.sort_values(by=["tot"], ascending=False, inplace=True)
+country_ds["tot_count"] = country_ds["tot_count"].astype(int)
+country_ds["tot_death"] = country_ds["tot_death"].astype(int)
+country_ds["lethality"] = country_ds["tot_death"]/country_ds["tot_count"]*100
+country_ds.sort_values(by=["tot_count"], ascending=False, inplace=True)
 country_ds.reset_index(drop=True, inplace=True)
 
 plt.rcParams.update({"font.size": 12})
@@ -84,9 +88,9 @@ for i in country_ds.index:
              r"tot = %s ($\dag\,$%s $\cdot$ %.1f%%)") % (
         country_ds["name"].iloc[i],
         param[0],
-        spacing(df["count"].values[-1]),
-        spacing(df["death"].values[-1]),
-        df["death"].values[-1]/df["count"].values[-1]*100
+        spacing(country_ds["tot_count"].iloc[i]),
+        spacing(country_ds["tot_death"].iloc[i]),
+        country_ds["lethality"].iloc[i]
     )
     ax1.plot(df.index, df["count"].values, ".",
              color=country_ds["color"].iloc[i], label=label, markersize=8)
@@ -116,8 +120,8 @@ ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
-ax1.set_ylim(bottom=country_ds["tot"].min()/6)
-ax1.set_ylim(top=country_ds["tot"].max()*1.3)
+ax1.set_ylim(bottom=country_ds["tot_count"].min()/6)
+ax1.set_ylim(top=country_ds["tot_count"].max()*1.3)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
 ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
@@ -128,7 +132,7 @@ ax2.yaxis.set_minor_locator(ticker.MultipleLocator(.5))
 ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
-ax2.set_ylim((-0.25, 9))
+ax2.set_ylim((-0.25, country_ds["lethality"].max()*1.1))
 ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=16)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
