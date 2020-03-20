@@ -3,10 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
 import numpy as np
-import datetime
-import matplotlib.dates as mdates
 from scipy.optimize import curve_fit
-from scipy.special import erf
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 sns.set()
@@ -23,7 +20,7 @@ def spacing(n):
 
 country_ds = pd.DataFrame(
     columns=["name", "filename", "date_format", "color", "tot_count",
-             "tot_death", "lethality"]
+             "tot_death", "lethality", "last_update"]
 )
 country_ds["name"] = [
     "United Kingdom", "Iran", "Italy", "Germany", "France", "China", "Spain",
@@ -55,6 +52,7 @@ for i in country_ds.index:
 country_ds["tot_count"] = country_ds["tot_count"].astype(int)
 country_ds["tot_death"] = country_ds["tot_death"].astype(int)
 country_ds["lethality"] = country_ds["tot_death"]/country_ds["tot_count"]*100
+country_ds["last_update"] = country_ds["tot_death"].astype("datetime64[ns]")
 country_ds.sort_values(by=["tot_count"], ascending=False, inplace=True)
 country_ds.reset_index(drop=True, inplace=True)
 
@@ -73,6 +71,8 @@ for i in country_ds.index:
     df = pd.read_csv("datasets/" + country_ds["filename"].iloc[i], **kwargs)
 
     t = mdates.date2num(df.index)
+    country_ds["last_update"].iloc[i] = df.index[-1]
+
     param = [1, t[-7], 0]
 
     param, _ = curve_fit(lin, t[-7:],
@@ -107,16 +107,16 @@ for i in country_ds.index:
 
 ax1.text(0.01, 0.99, r"$\bf{Data Source:}$ " +
                      r"Wikipedia $\cdot$ 2019–20_coronavirus_pandemic",
-         size=10, ha="left", va="top", clip_on=True,
-         transform=ax1.transAxes)
+         size=10, ha="left", va="top", clip_on=True, transform=ax1.transAxes)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          size=10, ha="right", va="bottom", weight="bold", clip_on=True,
          bbox={"boxstyle": "round", "color": "blue", "alpha": 0.1},
          transform=ax1.transAxes)
 
-ax1.set_xlim(left=mdates.num2date(t[-1] - 14.5))
-ax1.set_xlim(right=plt.xlim()[1] - 2.75)
+last_update = mdates.date2num(country_ds["last_update"].max())
+ax1.set_xlim(left=mdates.num2date(last_update - 14.5))
+ax1.set_xlim(right=mdates.num2date(last_update + .5))
 
 myFmt = mdates.DateFormatter("%b %d")
 
@@ -126,7 +126,7 @@ ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
 ax1.set_ylim(bottom=country_ds["tot_count"].min()/6)
-ax1.set_ylim(top=country_ds["tot_count"].max()*1.3)
+ax1.set_ylim(top=country_ds["tot_count"].max()*1.35)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
 ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
