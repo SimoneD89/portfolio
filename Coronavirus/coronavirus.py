@@ -26,11 +26,11 @@ country_ds = pd.DataFrame(
              "tot_death", "lethality"]
 )
 country_ds["name"] = [
-    "South Korea", "Iran", "Italy", "Germany", "France", "China", "Spain",
+    "United Kingdom", "Iran", "Italy", "Germany", "France", "China", "Spain",
     "Switzerland", "United States"
 ]
 country_ds["filename"] = [
-    "SouthKorea.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
+    "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
     "China.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
 ]
 country_ds["date_format"] = [
@@ -104,6 +104,11 @@ for i in country_ds.index:
              color=country_ds["color"].iloc[i], markersize=8)
     ax2.plot(df.index, (100*df["death"]/df["count"]).values, "-.",
              color=country_ds["color"].iloc[i], alpha=0.3, linewidth=0.8)
+
+ax1.text(0.01, 0.99, r"$\bf{Data Source:}$ " +
+                     r"Wikipedia $\cdot$ 2019–20_coronavirus_pandemic",
+         size=10, ha="left", va="top", clip_on=True,
+         transform=ax1.transAxes)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
          size=10, ha="right", va="bottom", weight="bold", clip_on=True,
