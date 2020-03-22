@@ -15,12 +15,16 @@ def spacing(n):
 
 
 country_ds = pd.DataFrame(
-    columns=["name", "filename", "date_format", "color", "tot_count",
-             "tot_death", "lethality", "last_update"]
+    columns=["name", "population", "filename", "date_format", "color",
+    "tot_count", "tot_death", "lethality", "last_update"]
 )
 country_ds["name"] = [
     "United Kingdom", "Iran", "Italy", "Germany", "France", "China", "Spain",
     "Switzerland", "United States"
+]
+country_ds["population"] = [
+    "66.44", "81.16", "60.48", "82.79", "66.99", "1386", "46.66", "8.57",
+    "327.2"
 ]
 country_ds["filename"] = [
     "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
@@ -46,6 +50,7 @@ for name in country_ds.index:
     country_ds.loc[name, "tot_count"] = df["count"].iloc[-1]
     country_ds.loc[name, "tot_death"] = df["death"].iloc[-1]
 
+country_ds["population"] = country_ds["population"].astype(float)
 country_ds["tot_count"] = country_ds["tot_count"].astype(int)
 country_ds["tot_death"] = country_ds["tot_death"].astype(int)
 country_ds["lethality"] = country_ds["tot_death"]/country_ds["tot_count"]*100
