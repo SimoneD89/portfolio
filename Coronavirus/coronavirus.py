@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
+import matplotlib.image as image
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from pandas.plotting import register_matplotlib_converters
@@ -14,9 +15,12 @@ def spacing(n):
     return "{:,d}".format(int(n)).replace(",", " ")
 
 
+flags = True
+
 country_ds = pd.DataFrame(
-    columns=["name", "population", "filename", "date_format", "color",
-    "tot_count", "tot_death", "lethality", "last_update"]
+    columns=["name", "population", "filename", "flagname", "date_format",
+             "color", "tot_count", "density", "tot_death", "lethality",
+             "last_update"]
 )
 country_ds["name"] = [
     "United Kingdom", "Iran", "Italy", "Germany", "France", "China", "Spain",
@@ -30,12 +34,16 @@ country_ds["filename"] = [
     "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
     "China.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
 ]
+country_ds["flagname"] = [
+    "gb.png", "ir.png", "it.png", "de.png", "fr.png",
+    "cn.png", "es.png", "ch.png", "us.png"
+]
 country_ds["date_format"] = [
     "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", None, "%Y-%m-%d",
     "%Y-%m-%d", "%b %d %Y"
 ]
 country_ds["color"] = [
-    "purple", "brown", "green", "orange", "blue", "red", "black", "crimson",
+    "purple", "brown", "green", "black", "blue", "red", "orange", "crimson",
     "darkblue"
 ]
 country_ds.set_index("name", inplace=True)
@@ -52,10 +60,11 @@ for name in country_ds.index:
 
 country_ds["population"] = country_ds["population"].astype(float)
 country_ds["tot_count"] = country_ds["tot_count"].astype(int)
+country_ds["density"] = country_ds["tot_count"]/country_ds["population"]
 country_ds["tot_death"] = country_ds["tot_death"].astype(int)
 country_ds["lethality"] = country_ds["tot_death"]/country_ds["tot_count"]*100
 country_ds["last_update"] = country_ds["tot_death"].astype("datetime64[ns]")
-country_ds.sort_values(by=["tot_count"], ascending=False, inplace=True)
+country_ds.sort_values(by=["density"], ascending=False, inplace=True)
 
 plt.rcParams.update({"font.size": 12})
 
@@ -71,11 +80,13 @@ for name in country_ds.index:
         kwargs["date_parser"] = lambda x: pd.to_datetime(
                 x, format=country_ds["date_format"].loc[name])
     df = pd.read_csv("datasets/" + country_ds["filename"].loc[name], **kwargs)
+    df["density"] = df["count"]/country_ds["population"].loc[name]
+    df["lethality"] = df["death"]/df["count"]*100
 
     t = mdates.date2num(df.index)
     country_ds.loc[name, "last_update"] = df.index[-1]
 
-    model.fit(t[-7:, np.newaxis], np.log2(df["count"].values[-7:]))
+    model.fit(t[-7:, np.newaxis], np.log2(df["density"].values[-7:]))
 
     t1 = np.linspace(t[-7:].min() - 0.5, t.max() + 0.25, 100)
     t2 = np.linspace(t[-1] - 15, t[-7:].min() - 0.5, 1000)
@@ -90,7 +101,8 @@ for name in country_ds.index:
         spacing(country_ds["tot_death"].loc[name]),
         country_ds["lethality"].loc[name]
     )
-    ax1.plot(df.index, df["count"].values, ".",
+
+    ax1.plot(df.index, df["density"].values, ".",
              color=country_ds["color"].loc[name], label=label, markersize=8)
     ax1.plot(d1, 2**(model.predict(t1[:, np.newaxis])), "-.", alpha=0.6,
              color=country_ds["color"].loc[name], linewidth=0.8)
@@ -98,9 +110,9 @@ for name in country_ds.index:
              color=country_ds["color"].loc[name], linewidth=0.8)
 
     df["death"].fillna(0, inplace=True)
-    ax2.plot(df.index, (100*df["death"]/df["count"]).values, ".",
+    ax2.plot(df.index, df["lethality"].values, ".",
              color=country_ds["color"].loc[name], markersize=8)
-    ax2.plot(df.index, (100*df["death"]/df["count"]).values, "-.",
+    ax2.plot(df.index, df["lethality"].values, "-.",
              color=country_ds["color"].loc[name], alpha=0.3, linewidth=0.8)
 
 ax1.text(0.01, 0.99, r"$\bf{Data Source:}$ " +
@@ -123,11 +135,11 @@ ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
-ax1.set_ylim(bottom=country_ds["tot_count"].min()/6)
-ax1.set_ylim(top=country_ds["tot_count"].max()*1.35)
+ax1.set_ylim(bottom=country_ds["density"].min()/3)
+ax1.set_ylim(top=country_ds["density"].max()*1.15)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
-ax1.set_ylabel("Infected People", rotation=270, labelpad=13)
+ax1.set_ylabel("Infected per million people", rotation=270, labelpad=12)
 ax1.yaxis.set_label_position("right")
 
 ax2.yaxis.set_major_locator(ticker.MultipleLocator(2))
@@ -136,7 +148,7 @@ ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
 ax2.set_ylim((-0.25, country_ds["lethality"].max()*1.1))
-ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=16)
+ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=7)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
 ax2.tick_params(axis="y", which="both", length=0)
@@ -148,6 +160,40 @@ ax1.grid(b=True, which="major", linestyle="-")
 ax1.grid(b=True, which="minor", linestyle="--")
 ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
+
+if flags is True:
+    for idx, name in enumerate(country_ds.index):
+        if country_ds["flagname"].loc[name] is None:
+            continue
+
+        kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
+        if country_ds["date_format"].loc[name] is not None:
+            kwargs["date_parser"] = lambda x: pd.to_datetime(
+                    x, format=country_ds["date_format"].loc[name])
+        df = (pd.read_csv("datasets/" + country_ds["filename"]
+              .loc[name], **kwargs))
+        df["density"] = df["count"]/country_ds["population"].loc[name]
+
+        t = mdates.date2num(df.index)
+
+        # Flag coords are given in axes coords to avoid log scale distorsion
+        # https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
+        flagCoord = ax1.transData.transform((
+            t[-14 + idx],
+            df["density"].values[-14 + idx]
+        ))
+        flagCoord = ax1.transAxes.inverted().transform(flagCoord)
+
+        figW, figH = ax1.get_figure().get_size_inches()
+        _, _, w, h = ax1.get_position().bounds
+        disp_ratio = figH*h/(figW*w)
+
+        im = image.imread("flags/" + country_ds["flagname"].loc[name])
+        ax1.imshow(im, aspect="auto", zorder=10, transform=ax1.transAxes,
+                   extent=(flagCoord[0] + 0.005,
+                           flagCoord[0] + 0.005 + 0.05*disp_ratio,
+                           flagCoord[1] - 0.025,
+                           flagCoord[1] + 0.025))
 
 plt.tight_layout()
 plt.savefig("coronavirus.png", dpi=200)
