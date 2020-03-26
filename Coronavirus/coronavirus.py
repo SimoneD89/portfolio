@@ -162,6 +162,7 @@ ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
 
 if flags is True:
+    init_time = 0
     for idx, name in enumerate(country_ds.index):
         if country_ds["flagname"].loc[name] is None:
             continue
@@ -176,11 +177,16 @@ if flags is True:
 
         t = mdates.date2num(df.index)
 
+        if init_time == 0:
+            init_time = t[-14]
+
+        flagIdx = np.where(t == init_time)[0][0]
+
         # Flag coords are given in axes coords to avoid log scale distorsion
         # https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
         flagCoord = ax1.transData.transform((
-            t[-14 + idx],
-            df["density"].values[-14 + idx]
+            t[flagIdx + idx],
+            df["density"].values[flagIdx + idx]
         ))
         flagCoord = ax1.transAxes.inverted().transform(flagCoord)
 
