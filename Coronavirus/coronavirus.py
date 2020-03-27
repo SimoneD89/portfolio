@@ -1,3 +1,4 @@
+import os.path
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -161,10 +162,13 @@ ax1.grid(b=True, which="minor", linestyle="--")
 ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
 
+plt.tight_layout()
+
 if flags is True:
     init_time = 0
     for idx, name in enumerate(country_ds.index):
-        if country_ds["flagname"].loc[name] is None:
+        flagname = country_ds["flagname"].loc[name]
+        if flagname is None or not os.path.isfile("flags/" + flagname):
             continue
 
         kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
@@ -194,13 +198,12 @@ if flags is True:
         _, _, w, h = ax1.get_position().bounds
         disp_ratio = figH*h/(figW*w)
 
-        im = image.imread("flags/" + country_ds["flagname"].loc[name])
+        im = image.imread("flags/" + flagname)
         ax1.imshow(im, aspect="auto", zorder=10, transform=ax1.transAxes,
                    extent=(flagCoord[0] + 0.005,
                            flagCoord[0] + 0.005 + 0.04*disp_ratio,
                            flagCoord[1] - 0.02,
                            flagCoord[1] + 0.02))
 
-plt.tight_layout()
 plt.savefig("coronavirus.png", dpi=200)
 plt.show()
