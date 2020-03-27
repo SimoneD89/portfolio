@@ -3,18 +3,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import matplotlib.ticker as ticker
-import matplotlib.image as image
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
+from corona_libs import *
+
 sns.set()
 register_matplotlib_converters()
-
-
-def spacing(n):
-    return "{:,d}".format(int(n)).replace(",", " ")
-
 
 flags = True
 
@@ -186,24 +182,8 @@ if flags is True:
 
         flagIdx = np.where(t == init_time)[0][0]
 
-        # Flag coords are given in axes coords to avoid log scale distorsion
-        # https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
-        flagCoord = ax1.transData.transform((
-            t[flagIdx + idx],
-            df["density"].values[flagIdx + idx]
-        ))
-        flagCoord = ax1.transAxes.inverted().transform(flagCoord)
-
-        figW, figH = ax1.get_figure().get_size_inches()
-        _, _, w, h = ax1.get_position().bounds
-        disp_ratio = figH*h/(figW*w)
-
-        im = image.imread("flags/" + flagname)
-        ax1.imshow(im, aspect="auto", zorder=10, transform=ax1.transAxes,
-                   extent=(flagCoord[0] + 0.005,
-                           flagCoord[0] + 0.005 + 0.04*disp_ratio,
-                           flagCoord[1] - 0.02,
-                           flagCoord[1] + 0.02))
+        plot_images2(t[flagIdx + idx], df["density"].values[flagIdx + idx],
+                     "flags/" + flagname, ax=ax1)
 
 plt.savefig("coronavirus.png", dpi=200)
 plt.show()
