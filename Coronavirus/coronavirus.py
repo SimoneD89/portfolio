@@ -178,7 +178,7 @@ if flags is True:
         t = mdates.date2num(df.index)
 
         if init_time == 0:
-            init_time = t[-14]
+            init_time = t[-15]
 
         flagIdx = np.where(t == init_time)[0][0]
 
@@ -197,9 +197,9 @@ if flags is True:
         im = image.imread("flags/" + country_ds["flagname"].loc[name])
         ax1.imshow(im, aspect="auto", zorder=10, transform=ax1.transAxes,
                    extent=(flagCoord[0] + 0.005,
-                           flagCoord[0] + 0.005 + 0.05*disp_ratio,
-                           flagCoord[1] - 0.025,
-                           flagCoord[1] + 0.025))
+                           flagCoord[0] + 0.005 + 0.04*disp_ratio,
+                           flagCoord[1] - 0.02,
+                           flagCoord[1] + 0.02))
 
 plt.tight_layout()
 plt.savefig("coronavirus.png", dpi=200)
