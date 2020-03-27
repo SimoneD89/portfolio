@@ -149,7 +149,7 @@ def sci_not(num):
 def diode_analyse(input_file, i, j, DCR=0, sc_print=0):
     path_rp = join(dirname(sys.argv[0]), config['Paths']["path_reports"])
     line = ("+"+69*"-"+"+")
-    diode = "PAT19D268"
+    diode = "DIODE"
     spec = "_PDE_" + str(j) + "%_HO_50us_t_30s"
 
     df = pd.read_csv(input_file, sep=";")
