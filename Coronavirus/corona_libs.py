@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.image as image
+import matplotlib.pyplot as plt
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 
 def spacing(n):
     return "{:,d}".format(int(n)).replace(",", " ")
 
 
-def plot_images(x, y, flagname, ax=None):
+def plot_images(x, y, flagname, scale=4, xshift=0, ax=None):
     ax = ax or plt.gca()
 
     image = plt.imread(flagname)
@@ -16,9 +18,9 @@ def plot_images(x, y, flagname, ax=None):
     image = np.swapaxes(np.swapaxes(np.array(img), 0, 1), 1, 2)
 
     for xi, yi in zip(x, y):
-        im = OffsetImage(image, zoom=4/ax1.figure.dpi)
+        im = OffsetImage(image, zoom=scale/ax.figure.dpi)
         im.image.axes = ax
-        ab = AnnotationBbox(im, (xi, yi), frameon=False)
+        ab = AnnotationBbox(im, (xi + xshift, yi), frameon=False)
         ax.add_artist(ab)
     return None
 
@@ -28,6 +30,7 @@ def plot_images2(xi, yi, flagname, scale=.04, xshift=.0135, ax=None):
 
     # Flag coords are given in axes coords to avoid log scale distorsion
     # https://matplotlib.org/tutorials/advanced/transforms_tutorial.html
+    # It needs to be executed after tight_layout()
     flagCoord = ax.transData.transform((xi, yi))
     flagCoord = ax.transAxes.inverted().transform(flagCoord)
 

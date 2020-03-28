@@ -71,7 +71,8 @@ f, (ax1, ax2) = plt.subplots(2, 1, sharex=True,
 f.subplots_adjust(hspace=0)
 
 model = LinearRegression(fit_intercept=True)
-for name in country_ds.index:
+init_time = 0
+for idx, name in enumerate(country_ds.index):
     kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
     if country_ds["date_format"].loc[name] is not None:
         kwargs["date_parser"] = lambda x: pd.to_datetime(
@@ -105,6 +106,15 @@ for name in country_ds.index:
              color=country_ds["color"].loc[name], linewidth=0.8)
     ax1.plot(d2, 2**(model.predict(t2[:, np.newaxis])), "-.", alpha=0.3,
              color=country_ds["color"].loc[name], linewidth=0.8)
+
+    flagname = country_ds["flagname"].loc[name]
+    if init_time == 0:
+        init_time = t[-15]
+
+    if flags is True and os.path.isfile("flags/" + flagname):
+        flagIdx = np.where(t == init_time)[0][0]
+        plot_images([t[flagIdx + idx]], [df["density"].values[flagIdx + idx]],
+                    "flags/" + flagname, xshift=0.2, scale=6, ax=ax1)
 
     df["death"].fillna(0, inplace=True)
     ax2.plot(df.index, df["lethality"].values, ".",
@@ -159,31 +169,5 @@ ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
 
 plt.tight_layout()
-
-if flags is True:
-    init_time = 0
-    for idx, name in enumerate(country_ds.index):
-        flagname = country_ds["flagname"].loc[name]
-        if flagname is None or not os.path.isfile("flags/" + flagname):
-            continue
-
-        kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
-        if country_ds["date_format"].loc[name] is not None:
-            kwargs["date_parser"] = lambda x: pd.to_datetime(
-                    x, format=country_ds["date_format"].loc[name])
-        df = (pd.read_csv("datasets/" + country_ds["filename"]
-              .loc[name], **kwargs))
-        df["density"] = df["count"]/country_ds["population"].loc[name]
-
-        t = mdates.date2num(df.index)
-
-        if init_time == 0:
-            init_time = t[-15]
-
-        flagIdx = np.where(t == init_time)[0][0]
-
-        plot_images2(t[flagIdx + idx], df["density"].values[flagIdx + idx],
-                     "flags/" + flagname, ax=ax1)
-
 plt.savefig("coronavirus.png", dpi=200)
 plt.show()
