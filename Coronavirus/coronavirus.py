@@ -24,8 +24,7 @@ country_ds["name"] = [
     "Switzerland", "United States"
 ]
 country_ds["population"] = [
-    "66.44", "81.16", "60.48", "82.79", "66.99", "1386", "46.66", "8.57",
-    "327.2"
+    66.44, 81.16, 60.48, 82.79, 66.99, 1386, 46.66, 8.57, 327.2
 ]
 country_ds["filename"] = [
     "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
