@@ -12,7 +12,8 @@ from corona_libs import *
 sns.set()
 register_matplotlib_converters()
 
-flags = True
+# Flags has 3 modes: 0 no flags, 1 representative flags, 2 flags markers
+flags = 2
 
 country_ds = pd.DataFrame(
     columns=["name", "population", "filename", "flagname", "date_format",
@@ -71,6 +72,9 @@ f.subplots_adjust(hspace=0)
 
 model = LinearRegression(fit_intercept=True)
 init_time = 0
+plots = []
+handlers = {}
+labels = []
 for idx, name in enumerate(country_ds.index):
     kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
     if country_ds["date_format"].loc[name] is not None:
@@ -98,22 +102,33 @@ for idx, name in enumerate(country_ds.index):
         spacing(country_ds["tot_death"].loc[name]),
         country_ds["lethality"].loc[name]
     )
+    labels.append(label)
 
-    ax1.plot(df.index, df["density"].values, ".",
-             color=country_ds["color"].loc[name], label=label, markersize=8)
+    plot = ax1.plot(df.index, df["density"].values, ".", markersize=8,
+                    color=country_ds["color"].loc[name], label=label)
     ax1.plot(d1, 2**(model.predict(t1[:, np.newaxis])), "-.", alpha=0.6,
              color=country_ds["color"].loc[name], linewidth=0.8)
     ax1.plot(d2, 2**(model.predict(t2[:, np.newaxis])), "-.", alpha=0.3,
              color=country_ds["color"].loc[name], linewidth=0.8)
 
     flagname = country_ds["flagname"].loc[name]
-    if init_time == 0:
-        init_time = t[-15]
-
-    if flags is True and os.path.isfile("flags/" + flagname):
-        flagIdx = np.where(t == init_time)[0][0]
-        plot_images([t[flagIdx + idx]], [df["density"].values[flagIdx + idx]],
-                    "flags/" + flagname, xshift=0.2, scale=6, ax=ax1)
+    if flags == 1:
+        if init_time == 0:
+            init_time = t[-15]
+        if os.path.isfile("flags/" + flagname):
+            flagIdx = np.where(t == init_time)[0][0]
+            plot_images([t[flagIdx + idx]],
+                        [df["density"].values[flagIdx + idx]],
+                        "flags/" + flagname, xshift=0.2, scale=6, ax=ax1)
+    elif flags == 2:
+        custom_handler = ImageHandler()
+        custom_handler.set_image("flags/" + flagname, image_stretch=(-8, 2))
+        plots.append(plot[0])
+        handlers[plot[0]] = custom_handler
+        plot_images(t[-15:], df["density"].values[-15:],
+                    "flags/" + flagname, scale=2.6, ax=ax1)
+        plot_images(t[-15:], df["lethality"].values[-15:],
+                    "flags/" + flagname, scale=2.6, ax=ax2)
 
     df["death"].fillna(0, inplace=True)
     ax2.plot(df.index, df["lethality"].values, ".",
@@ -160,8 +175,14 @@ ax2.yaxis.tick_right()
 ax2.tick_params(axis="y", which="both", length=0)
 ax2.yaxis.set_label_position("right")
 
-ax1.legend(loc="lower left", fontsize=8, ncol=3,
-           bbox_to_anchor=(-0.004, 0.99, 1.008, 0.), mode="expand")
+if flags != 2:
+    ax1.legend(loc="lower left", fontsize=8, ncol=3,
+               bbox_to_anchor=(-0.004, 0.99, 1.008, 0.), mode="expand")
+else:
+    ax1.legend(plots, labels, handler_map=handlers, loc="lower left",
+               fontsize=8, ncol=3, bbox_to_anchor=(-0.004, 0.99, 1.008, 0.),
+               mode="expand")
+
 ax1.grid(b=True, which="major", linestyle="-")
 ax1.grid(b=True, which="minor", linestyle="--")
 ax2.grid(b=True, which="major", linestyle="-")
