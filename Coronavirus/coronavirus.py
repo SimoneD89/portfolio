@@ -12,7 +12,7 @@ from corona_libs import *
 sns.set()
 register_matplotlib_converters()
 
-# Flags has 3 modes: 0 no flags, 1 representative flags, 2 flags markers
+# 3 modes: 0 no flags, 1 representative flags, 2 flag markers
 flags = 2
 
 country_ds = pd.DataFrame(
@@ -169,7 +169,7 @@ ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
 ax2.set_ylim((-0.25, country_ds["lethality"].max()*1.1))
-ax2.set_ylabel("Lethality Rate", rotation=270, labelpad=8)
+ax2.set_ylabel("Lethality rate", rotation=270, labelpad=8)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
 ax2.tick_params(axis="y", which="both", length=0)
