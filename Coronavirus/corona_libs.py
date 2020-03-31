@@ -19,7 +19,7 @@ def plot_images(x, y, flagname, scale=4, xshift=0, ax=None):
     image = plt.imread(flagname)
     img = []
     for i in range(image.shape[-1]):
-        img.append(np.pad(image[:, :, i], ((10, 10), (10, 10))))
+        img.append(np.pad(image[:, :, i], ((12, 12), (12, 12))))
     image = np.swapaxes(np.swapaxes(np.array(img), 0, 1), 1, 2)
 
     for xi, yi in zip(x, y):

@@ -21,22 +21,22 @@ country_ds = pd.DataFrame(
              "last_update"]
 )
 country_ds["name"] = [
-    "United Kingdom", "Iran", "Italy", "Germany", "France", "China", "Spain",
+    "United Kingdom", "Iran", "Italy", "Germany", "France", "Ticino", "Spain",
     "Switzerland", "United States"
 ]
 country_ds["population"] = [
-    66.44, 81.16, 60.48, 82.79, 66.99, 1386, 46.66, 8.57, 327.2
+    66.44, 81.16, 60.48, 82.79, 66.99, 0.3537, 46.66, 8.57, 327.2
 ]
 country_ds["filename"] = [
     "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
-    "China.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
+    "Ticino.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
 ]
 country_ds["flagname"] = [
     "gb.png", "ir.png", "it.png", "de.png", "fr.png",
-    "cn.png", "es.png", "ch.png", "us.png"
+    "ti.png", "es.png", "ch.png", "us.png"
 ]
 country_ds["date_format"] = [
-    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", None, "%Y-%m-%d",
+    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d", "%Y-%m-%d",
     "%Y-%m-%d", "%b %d %Y"
 ]
 country_ds["color"] = [
@@ -126,9 +126,9 @@ for idx, name in enumerate(country_ds.index):
         plots.append(plot[0])
         handlers[plot[0]] = custom_handler
         plot_images(t[-15:], df["density"].values[-15:],
-                    "flags/" + flagname, scale=2.6, ax=ax1)
+                    "flags/" + flagname, scale=2.7, ax=ax1)
         plot_images(t[-15:], df["lethality"].values[-15:],
-                    "flags/" + flagname, scale=2.6, ax=ax2)
+                    "flags/" + flagname, scale=2.7, ax=ax2)
 
     df["death"].fillna(0, inplace=True)
     ax2.plot(df.index, df["lethality"].values, ".",
