@@ -137,7 +137,8 @@ for idx, name in enumerate(country_ds.index):
              color=country_ds["color"].loc[name], alpha=0.3, linewidth=0.8)
 
 ax1.text(0.01, 0.99, r"$\bf{Data Source:}$ " +
-                     r"Wikipedia $\cdot$ 2019–20_coronavirus_pandemic",
+                     r"Wikipedia $\cdot$ 2019–20_coronavirus_pandemic" +
+                     r", admin.ch, ti.ch",
          size=10, ha="left", va="top", clip_on=True, transform=ax1.transAxes)
 
 ax1.text(0.982, 0.04, r"Model: $t \mapsto A\cdot 2^{(t-t_0)/\tau}$",
