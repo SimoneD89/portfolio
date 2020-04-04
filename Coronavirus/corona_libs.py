@@ -76,10 +76,5 @@ class ImageHandler(HandlerBase):
         return [image]
 
     def set_image(self, image_path, image_stretch=(0, 0)):
-        if not os.path.exists(image_path):
-            sample = get_sample_data("grace_hopper.png", asfileobj=False)
-            self.image_data = read_png(sample)
-        else:
-            self.image_data = read_png(image_path)
-
+        self.image_data = read_png(image_path)
         self.image_stretch = image_stretch
