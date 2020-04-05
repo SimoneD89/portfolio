@@ -190,5 +190,5 @@ ax2.grid(b=True, which="major", linestyle="-")
 ax2.grid(b=True, which="minor", linestyle="--")
 
 plt.tight_layout()
-plt.savefig("coronavirus.png", dpi=200)
+plt.savefig("coronavirus.png", dpi=250)
 plt.show()
