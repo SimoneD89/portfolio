@@ -13,7 +13,7 @@ def spacing(n):
     return "{:,d}".format(int(n)).replace(",", " ")
 
 
-def plot_images(x, y, flagname, scale=4, xshift=0, ax=None):
+def plot_images(x, y, flagname, scale=4, xshift=0, alpha=None, ax=None):
     ax = ax or plt.gca()
 
     image = plt.imread(flagname)
@@ -23,7 +23,7 @@ def plot_images(x, y, flagname, scale=4, xshift=0, ax=None):
     image = np.swapaxes(np.swapaxes(np.array(img), 0, 1), 1, 2)
 
     for xi, yi in zip(x, y):
-        im = OffsetImage(image, zoom=scale/ax.figure.dpi)
+        im = OffsetImage(image, zoom=scale/ax.figure.dpi, alpha=alpha)
         im.image.axes = ax
         ab = AnnotationBbox(im, (xi + xshift, yi), frameon=False)
         ax.add_artist(ab)

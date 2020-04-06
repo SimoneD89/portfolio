@@ -36,8 +36,8 @@ country_ds["flagname"] = [
     "ti.png", "es.png", "ch.png", "us.png"
 ]
 country_ds["date_format"] = [
-    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d", "%Y-%m-%d",
-    "%Y-%m-%d", "%b %d %Y"
+    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d",
+    "%Y-%m-%d", "%Y-%m-%d", "%b %d %Y"
 ]
 country_ds["color"] = [
     "purple", "brown", "green", "black", "blue", "red", "orange", "crimson",
@@ -104,31 +104,34 @@ for idx, name in enumerate(country_ds.index):
     )
     labels.append(label)
 
-    plot = ax1.plot(df.index, df["density"].values, ".", markersize=8,
-                    color=country_ds["color"].loc[name], label=label)
+    image_path = "flags/" + country_ds["flagname"].loc[name]
+
+    plot = plt.plot([], [])
+    if flags != 2 or not os.path.exists(image_path):
+        plot = ax1.plot(df.index, df["density"].values, ".", markersize=8,
+                        color=country_ds["color"].loc[name], label=label)
     ax1.plot(d1, 2**(model.predict(t1[:, np.newaxis])), "-.", alpha=0.6,
              color=country_ds["color"].loc[name], linewidth=0.8)
     ax1.plot(d2, 2**(model.predict(t2[:, np.newaxis])), "-.", alpha=0.3,
              color=country_ds["color"].loc[name], linewidth=0.8)
+    plots.append(plot[0])
 
-    flagname = country_ds["flagname"].loc[name]
-    if flags == 1:
+    if flags == 1 and os.path.exists(image_path):
         if init_time == 0:
             init_time = t[-15]
         if os.path.isfile("flags/" + flagname):
             flagIdx = np.where(t == init_time)[0][0]
             plot_images([t[flagIdx + idx]],
                         [df["density"].values[flagIdx + idx]],
-                        "flags/" + flagname, xshift=0.2, scale=6, ax=ax1)
-    elif flags == 2:
+                        image_path, xshift=0.2, scale=6, ax=ax1)
+    elif flags == 2 and os.path.exists(image_path):
         custom_handler = ImageHandler()
-        custom_handler.set_image("flags/" + flagname, image_stretch=(-8, 2))
-        plots.append(plot[0])
+        custom_handler.set_image(image_path, image_stretch=(-8, 2))
         handlers[plot[0]] = custom_handler
         plot_images(t[-15:], df["density"].values[-15:],
-                    "flags/" + flagname, scale=2.7, ax=ax1)
+                    image_path, scale=2.7, ax=ax1)
         plot_images(t[-15:], df["lethality"].values[-15:],
-                    "flags/" + flagname, scale=2.7, ax=ax2)
+                    image_path, scale=2.7, ax=ax2)
 
     df["death"].fillna(0, inplace=True)
     ax2.plot(df.index, df["lethality"].values, ".",
@@ -176,13 +179,8 @@ ax2.yaxis.tick_right()
 ax2.tick_params(axis="y", which="both", length=0)
 ax2.yaxis.set_label_position("right")
 
-if flags != 2:
-    ax1.legend(loc="lower left", fontsize=8, ncol=3,
-               bbox_to_anchor=(-0.004, 0.99, 1.008, 0.), mode="expand")
-else:
-    ax1.legend(plots, labels, handler_map=handlers, loc="lower left",
-               fontsize=8, ncol=3, bbox_to_anchor=(-0.004, 0.99, 1.008, 0.),
-               mode="expand")
+ax1.legend(plots, labels, handler_map=handlers, loc="lower left", ncol=3,
+           fontsize=8, bbox_to_anchor=(-0.004, 0.99, 1.008, 0.), mode="expand")
 
 ax1.grid(b=True, which="major", linestyle="-")
 ax1.grid(b=True, which="minor", linestyle="--")
