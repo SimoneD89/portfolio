@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from pandas.plotting import register_matplotlib_converters
 import seaborn as sns
 from corona_libs import *
-
+from matplotlib.ticker import FormatStrFormatter
 sns.set()
 register_matplotlib_converters()
 
@@ -164,6 +164,11 @@ ax1.set_ylim(bottom=country_ds["density"].min()/3)
 ax1.set_ylim(top=country_ds["density"].max()*1.15)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
+ax1.tick_params(axis="y", which="major", pad=2)
+ax1.tick_params(axis="y", which="minor", labelsize=6, pad=7)
+ax1.yaxis.set_minor_formatter(
+    ticker.FuncFormatter(lambda y, _: f"{str(y)[0]}")
+)
 ax1.set_ylabel("Infected per million people", rotation=270, labelpad=17)
 ax1.yaxis.set_label_position("right")
 
