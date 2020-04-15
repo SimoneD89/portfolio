@@ -21,22 +21,22 @@ country_ds = pd.DataFrame(
              "last_update"]
 )
 country_ds["name"] = [
-    "United Kingdom", "Iran", "Italy", "Germany", "France", "Ticino", "Spain",
+    "United Kingdom", "Lombardy", "Italy", "Germany", "France", "Ticino", "Spain",
     "Switzerland", "United States"
 ]
 country_ds["population"] = [
-    66.44, 81.16, 60.48, 82.79, 66.99, 0.3537, 46.66, 8.57, 327.2
+    66.44, 10.06, 60.48, 82.79, 66.99, 0.3537, 46.66, 8.57, 327.2
 ]
 country_ds["filename"] = [
-    "UnitedKingdom.dat", "Iran.dat", "Italy.dat", "Germany.dat", "France.dat",
+    "UnitedKingdom.dat", "Lombardy.dat", "Italy.dat", "Germany.dat", "France.dat",
     "Ticino.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
 ]
 country_ds["flagname"] = [
-    "gb.png", "ir.png", "it.png", "de.png", "fr.png",
+    "gb.png", "lo.png", "it.png", "de.png", "fr.png",
     "ti.png", "es.png", "ch.png", "us.png"
 ]
 country_ds["date_format"] = [
-    "%Y-%m-%d", None, "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d",
+    "%Y-%m-%d", "%d-%m-%Y", "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d",
     "%Y-%m-%d", "%Y-%m-%d", "%b %d %Y"
 ]
 country_ds["color"] = [
@@ -160,7 +160,7 @@ ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
-ax1.set_ylim(bottom=country_ds["density"].min()/3)
+ax1.set_ylim(bottom=country_ds["density"].min()/2)
 ax1.set_ylim(top=country_ds["density"].max()*1.15)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
