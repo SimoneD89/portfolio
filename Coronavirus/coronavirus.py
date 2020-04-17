@@ -40,7 +40,7 @@ country_ds["date_format"] = [
     "%Y-%m-%d", "%Y-%m-%d", "%b %d %Y"
 ]
 country_ds["color"] = [
-    "purple", "brown", "green", "black", "blue", "red", "orange", "crimson",
+    "purple", "teal", "green", "black", "blue", "red", "orange", "crimson",
     "darkblue"
 ]
 country_ds.set_index("name", inplace=True)
