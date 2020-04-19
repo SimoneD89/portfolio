@@ -21,15 +21,16 @@ country_ds = pd.DataFrame(
              "last_update"]
 )
 country_ds["name"] = [
-    "United Kingdom", "Lombardy", "Italy", "Germany", "France", "Ticino", "Spain",
-    "Switzerland", "United States"
+    "United Kingdom", "Lombardy", "Italy", "Germany", "France", "Ticino",
+    "Spain", "Switzerland", "United States"
 ]
 country_ds["population"] = [
     66.44, 10.06, 60.48, 82.79, 66.99, 0.3537, 46.66, 8.57, 327.2
 ]
 country_ds["filename"] = [
-    "UnitedKingdom.dat", "Lombardy.dat", "Italy.dat", "Germany.dat", "France.dat",
-    "Ticino.dat", "Spain.dat", "Switzerland.dat", "UnitedStates.dat"
+    "UnitedKingdom.dat", "Lombardy.dat", "Italy.dat", "Germany.dat",
+    "France.dat", "Ticino.dat", "Spain.dat", "Switzerland.dat",
+    "UnitedStates.dat"
 ]
 country_ds["flagname"] = [
     "gb.png", "lo.png", "it.png", "de.png", "fr.png",
@@ -160,8 +161,8 @@ ax1.xaxis.set_major_locator(mdates.DayLocator(interval=2))
 ax1.xaxis.set_minor_locator(mdates.DayLocator())
 
 ax1.set_yscale("log")
-ax1.set_ylim(bottom=country_ds["density"].min()/2)
-ax1.set_ylim(top=country_ds["density"].max()*1.15)
+ax1.set_ylim(bottom=country_ds["density"].min()/1.5)
+ax1.set_ylim(top=country_ds["density"].max()*1.2)
 ax1.yaxis.tick_right()
 ax1.tick_params(axis="y", which="both", length=0)
 ax1.tick_params(axis="y", which="major", pad=2)
@@ -172,8 +173,8 @@ ax1.yaxis.set_minor_formatter(
 ax1.set_ylabel("Infected per million people", rotation=270, labelpad=17)
 ax1.yaxis.set_label_position("right")
 
-ax2.yaxis.set_major_locator(ticker.MultipleLocator(2))
-ax2.yaxis.set_minor_locator(ticker.MultipleLocator(.5))
+ax2.yaxis.set_major_locator(ticker.MultipleLocator(5))
+ax2.yaxis.set_minor_locator(ticker.MultipleLocator(1))
 ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
