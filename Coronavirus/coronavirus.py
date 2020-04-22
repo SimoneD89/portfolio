@@ -33,8 +33,8 @@ country_ds["filename"] = [
     "UnitedStates.dat"
 ]
 country_ds["flagname"] = [
-    "gb.png", "lo.png", "it.png", "de.png", "fr.png",
-    "ti.png", "es.png", "ch.png", "us.png"
+    "gb.png", "it-lo.png", "it.png", "de.png", "fr.png",
+    "ch-ti.png", "es.png", "ch.png", "us.png"
 ]
 country_ds["date_format"] = [
     "%Y-%m-%d", "%d-%m-%Y", "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y", "%Y-%m-%d",
