@@ -15,6 +15,8 @@ register_matplotlib_converters()
 # 3 modes: 0 no flags, 1 representative flags, 2 flag markers
 flags = 2
 
+country_numbers = 9  # number of countries to display (max 9)
+
 country_ds = pd.DataFrame(
     columns=["name", "population", "filename", "flagname", "date_format",
              "color", "tot_count", "density", "tot_death", "lethality",
@@ -45,6 +47,7 @@ country_ds["color"] = [
     "darkblue"
 ]
 country_ds.set_index("name", inplace=True)
+country_ds = country_ds.iloc[:country_numbers]
 
 for name in country_ds.index:
     kwargs = {"delimiter": ";", "index_col": "data", "parse_dates": True}
@@ -105,10 +108,14 @@ for idx, name in enumerate(country_ds.index):
     )
     labels.append(label)
 
-    image_path = "flags/" + country_ds["flagname"].loc[name]
+    flagname = country_ds["flagname"].loc[name]
+    if flagname is not None:
+        image_path = "flags/" + flagname
+    else:
+        image_path = None
 
     plot = plt.plot([], [])
-    if flags != 2 or not os.path.exists(image_path):
+    if flags != 2 or flagname is None or not os.path.exists(image_path):
         plot = ax1.plot(df.index, df["density"].values, ".", markersize=8,
                         color=country_ds["color"].loc[name], label=label)
     ax1.plot(d1, 2**(model.predict(t1[:, np.newaxis])), "-.", alpha=0.6,
@@ -117,7 +124,7 @@ for idx, name in enumerate(country_ds.index):
              color=country_ds["color"].loc[name], linewidth=0.8)
     plots.append(plot[0])
 
-    if flags == 1 and os.path.exists(image_path):
+    if flags == 1 and flagname is not None and os.path.exists(image_path):
         if init_time == 0:
             init_time = t[-15]
         if os.path.isfile("flags/" + flagname):
@@ -125,7 +132,7 @@ for idx, name in enumerate(country_ds.index):
             plot_images([t[flagIdx + idx]],
                         [df["density"].values[flagIdx + idx]],
                         image_path, xshift=0.2, scale=6, ax=ax1)
-    elif flags == 2 and os.path.exists(image_path):
+    elif flags == 2 and flagname is not None and os.path.exists(image_path):
         custom_handler = ImageHandler()
         custom_handler.set_image(image_path, image_stretch=(-8, 2))
         handlers[plot[0]] = custom_handler
