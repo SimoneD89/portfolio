@@ -13,7 +13,7 @@ sns.set()
 register_matplotlib_converters()
 
 # 3 modes: 0 no flags, 1 representative flags, 2 flag markers
-flags = 2
+flags = 0
 
 country_numbers = 9  # number of countries to display (max 9)
 
