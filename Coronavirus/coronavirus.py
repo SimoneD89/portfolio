@@ -10,7 +10,6 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox, Bbox
 from matplotlib.transforms import TransformedBbox
 from matplotlib.image import BboxImage
 from matplotlib.legend_handler import HandlerBase
-from matplotlib._png import read_png
 from sklearn.linear_model import LinearRegression
 import seaborn as sns
 sns.set()
@@ -41,7 +40,7 @@ class ImageHandler(HandlerBase):
         return [image]
 
     def set_image(self, image_path, image_stretch=(0, 0)):
-        self.image_data = plt.imread(image_path)/250
+        self.image_data = plt.imread(image_path)
         self.image_stretch = image_stretch
 
 
@@ -261,7 +260,7 @@ ax2.yaxis.set_minor_locator(ticker.MultipleLocator(1))
 ax2.yaxis.set_major_formatter(
     ticker.FuncFormatter(lambda y, _: "{:.0%}".format(y/100))
 )
-ax2.set_ylim((-0.25, country_ds["lethality"].max()*1.1))
+ax2.set_ylim((2, country_ds["lethality"].max()*1.1))
 ax2.set_ylabel("Lethality rate", rotation=270, labelpad=12)
 ax2.minorticks_on()
 ax2.yaxis.tick_right()
