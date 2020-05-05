@@ -7,7 +7,7 @@ Coronavirus outbreak by (most infected) countries
 because of the 2019-20 coronavirus outbreak.
 
 The data are taken from
-- https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_outbreak
+- https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory
 - http://www.protezionecivile.gov.it/
 - https://www4.ti.ch/dss/dsp/covid19/home/
 - https://www.bag.admin.ch
@@ -20,7 +20,7 @@ true interpretation of the current events.
 Covid-19 nei paesi più esposti all'infezione.
 
 I dati sono stati recuperati da
-- https://en.wikipedia.org/wiki/2019%E2%80%9320_coronavirus_outbreak
+- https://en.wikipedia.org/wiki/COVID-19_pandemic_by_country_and_territory
 - http://www.protezionecivile.gov.it/
 - https://www4.ti.ch/dss/dsp/covid19/home/
 - https://www.bag.admin.ch
